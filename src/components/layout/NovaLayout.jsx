@@ -13,15 +13,17 @@ export const NovaLayout = ({ children, sidebar, header }) => {
 
       <div className="flex flex-1 overflow-hidden relative">
         {/* Main Game Area */}
-        <main className="flex-1 flex items-center justify-center p-4 relative overflow-hidden bg-dot-pattern">
-          {/* Background Gradients */}
-          <div className="absolute top-[-20%] left-[-20%] w-[50%] h-[50%] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
-          <div className="absolute bottom-[-20%] right-[-20%] w-[50%] h-[50%] bg-accent/10 rounded-full blur-[120px] pointer-events-none" />
+        <main className="flex-1 overflow-auto relative bg-dot-pattern">
+          <div className="min-h-full min-w-full flex items-center justify-center p-4">
+            {/* Background Gradients */}
+            <div className="absolute top-[-20%] left-[-20%] w-[50%] h-[50%] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
+            <div className="absolute bottom-[-20%] right-[-20%] w-[50%] h-[50%] bg-accent/10 rounded-full blur-[120px] pointer-events-none" />
 
-          <GameStatus />
+            <GameStatus />
 
-          <div className="relative z-10 w-full max-w-4xl aspect-square flex items-center justify-center">
-            {children}
+            <div className="relative z-10 w-full max-w-4xl aspect-square flex items-center justify-center shrink-0">
+              {children}
+            </div>
           </div>
         </main>
 

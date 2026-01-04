@@ -4,7 +4,7 @@ import { X, Compass, Skull, DoorOpen, TrendUp, Bug } from '@phosphor-icons/react
 const TutorialModal = ({ onClose }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-2xl bg-gray-900 border border-purple-500/30 rounded-2xl shadow-[0_0_50px_rgba(168,85,247,0.15)] overflow-hidden">
+      <div className="relative w-full max-w-2xl max-h-[90vh] bg-gray-900 border border-purple-500/30 rounded-2xl shadow-[0_0_50px_rgba(168,85,247,0.15)] overflow-y-auto">
 
         {/* Header Background Effect */}
         <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-purple-900/20 to-transparent pointer-events-none" />

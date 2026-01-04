@@ -43,16 +43,16 @@ export default function GameHeader({ user, onLogout, onShowLeaderboard }) {
         </div>
 
         {/* CENTER GROUP: [HP] [METER] [XP] */}
-        <div className="relative flex items-center justify-center w-full max-w-[800px]">
+        <div className="relative flex items-center justify-center w-full max-w-[800px] gap-2 md:gap-4">
 
-          {/* 1. HP (Grows Left from the Left Edge of Meter) */}
-          <div className="absolute right-[calc(50%+206px+3.5rem)] flex items-center justify-end gap-2 text-white bg-red-500/10 px-3 py-1 rounded-full border border-red-500/20 whitespace-nowrap">
+          {/* 1. HP */}
+          <div className="flex items-center justify-end gap-2 text-white bg-red-500/10 px-2 md:px-3 py-1 rounded-full border border-red-500/20 whitespace-nowrap shrink-0">
             <span className="font-mono font-bold text-sm hidden md:inline">{player.hp}/{player.maxHp}</span>
             <Heart size={16} className="text-red-500 fill-current" />
           </div>
 
-          {/* 2. ALERT METER (Fixed Width 412px = Initial 8x8 Board) */}
-          <div className="w-[412px] flex-shrink-0 flex flex-col gap-1 mx-2">
+          {/* 2. ALERT METER */}
+          <div className="w-full max-w-[200px] md:max-w-[412px] flex-shrink flex flex-col gap-1 mx-0 md:mx-2 transition-all">
             <div className="flex justify-between text-[10px] text-muted-foreground uppercase font-bold tracking-wider">
               <span>Alertness</span>
               <span className={alertness > 80 ? "text-red-500" : "text-primary"}>{alertness}%</span>
@@ -60,10 +60,10 @@ export default function GameHeader({ user, onLogout, onShowLeaderboard }) {
             <Progress value={alertness} className="h-2 bg-secondary" indicatorClassName={alertness > 80 ? "bg-red-500 shadow-[0_0_10px_red]" : "bg-primary shadow-[0_0_10px_currentColor]"} />
           </div>
 
-          {/* 3. XP (Grows Right from the Right Edge of Meter) */}
+          {/* 3. XP */}
           <button
             onClick={() => setShopOpen(true)}
-            className="absolute left-[calc(50%+206px+3.5rem)] hidden md:flex items-center gap-2 text-amber-200 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20 whitespace-nowrap hover:bg-amber-500/20 hover:scale-105 transition-all cursor-pointer pointer-events-auto"
+            className="hidden md:flex items-center gap-2 text-amber-200 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20 whitespace-nowrap hover:bg-amber-500/20 hover:scale-105 transition-all cursor-pointer pointer-events-auto shrink-0"
             title="Open Skill Shop"
           >
             <Zap size={16} className="text-amber-400 fill-current" />
