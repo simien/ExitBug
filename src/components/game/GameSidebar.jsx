@@ -62,6 +62,15 @@ export default function GameSidebar() {
   return (
     <div className="flex flex-col gap-6 py-4">
 
+      {/* Floor Indicator */}
+      <div className="flex items-center justify-center">
+        <Badge variant="outline" className="text-xs font-bold tracking-widest py-1 px-3 border-primary/20 bg-background/50 backdrop-blur-md whitespace-nowrap">
+          FLOOR <span className="text-primary ml-1 text-sm">{state.floor}</span>
+        </Badge>
+      </div>
+
+      <Separator />
+
       {/* Passives Section */}
       <div className="space-y-2">
         <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest text-center">Stats & Passives</h3>

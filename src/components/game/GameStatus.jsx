@@ -21,7 +21,7 @@ export default function GameStatus() {
   if (!message) return null;
 
   return (
-    <div className="absolute top-8 left-1/2 -translate-x-1/2 z-20 pointer-events-none w-full max-w-md text-center px-4">
+    <div className="z-20 pointer-events-none w-full max-w-md text-center px-4">
       <div className={cn(
         "inline-block px-4 py-2 rounded-full border bg-black/60 backdrop-blur-md shadow-lg transition-all duration-300",
         gameState === 'won' ? "border-green-500/30 text-green-400" :

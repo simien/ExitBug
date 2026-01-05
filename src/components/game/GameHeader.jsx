@@ -35,10 +35,9 @@ export default function GameHeader({ user, onLogout, onShowLeaderboard }) {
       {/* Col 1: Game Area Controls (Centered relative to tiling area) */}
       <div className="relative flex items-center justify-between md:justify-center px-2 md:px-4 min-w-0 w-full h-full gap-2">
 
-        {/* LEFT: Floor Indicator (Static on mobile, Absolute on Desktop) */}
-        <div className="flex md:absolute md:left-4 items-center gap-4 shrink-0 z-20">
+        <div className="flex md:hidden items-center gap-4 shrink-0 z-20">
           <Badge variant="outline" className="text-[10px] md:text-xs font-bold tracking-widest py-0.5 md:py-1 px-2 md:px-3 border-primary/20 bg-black/40 backdrop-blur-md whitespace-nowrap">
-            FLOOR <span className="text-primary ml-1 text-sm">{floor}</span>
+            <span className="text-primary text-sm">{floor}</span>
           </Badge>
         </div>
 
