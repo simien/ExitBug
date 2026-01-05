@@ -98,6 +98,7 @@ export function SkillShopDialog({ open, onOpenChange }) {
                       : "text-zinc-500 border-zinc-800 hover:bg-zinc-900 cursor-not-allowed opacity-50"}
                     disabled={!canAfford}
                     onClick={() => onPurchase(u.id, u.cost)}
+                    aria-label={`Purchase ${u.name} for ${u.cost} XP`}
                   >
                     {u.cost} XP
                   </Button>

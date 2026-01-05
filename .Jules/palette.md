@@ -1,0 +1,3 @@
+## 2026-01-05 - Accessibility for Game Interactions
+**Learning:** Icon-only buttons (like those using Phosphor icons) are a common pattern in game UIs but often lack accessible names, making them invisible to screen reader users. Adding `aria-label` is a high-impact, low-risk fix.
+**Action:** Always scan `GameHeader` and toolbars for `<Button size="icon">` and ensure they have a descriptive `aria-label`. In dynamic lists (like shops), construct labels that include both the item name and cost (e.g., "Purchase [Item] for [Cost]") to provide full context without visual scanning.

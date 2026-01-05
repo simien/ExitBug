@@ -74,10 +74,10 @@ export default function GameHeader({ user, onLogout, onShowLeaderboard }) {
 
         {/* Mobile Actions (Visible only on small screens) - Static flow on mobile */}
         <div className="flex md:hidden items-center gap-1 shrink-0 z-20">
-          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setShopOpen(true)}>
+          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setShopOpen(true)} aria-label="Open skill shop">
             <Zap size={18} weight="fill" className="text-amber-400" />
           </Button>
-          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onShowLeaderboard}>
+          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onShowLeaderboard} aria-label="Show leaderboard">
             <Trophy size={18} />
           </Button>
         </div>
@@ -86,13 +86,13 @@ export default function GameHeader({ user, onLogout, onShowLeaderboard }) {
       {/* Col 2: Sidebar Header Area (Desktop Only) */}
       <div className="hidden md:flex items-center justify-end px-4 border-l border-white/5 bg-black/20">
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" onClick={onShowLeaderboard} className="hover:bg-amber-500/10 hover:text-amber-500">
+          <Button variant="ghost" size="icon" onClick={onShowLeaderboard} className="hover:bg-amber-500/10 hover:text-amber-500" aria-label="Show leaderboard">
             <Trophy size={18} />
           </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-9 w-9 rounded-full ring-2 ring-primary/20 hover:ring-primary/50 transition-all">
+              <Button variant="ghost" className="relative h-9 w-9 rounded-full ring-2 ring-primary/20 hover:ring-primary/50 transition-all" aria-label="User menu">
                 <Avatar className="h-9 w-9">
                   <AvatarImage src="" />
                   <AvatarFallback className="bg-primary/10 text-primary font-bold">{user?.email?.[0]?.toUpperCase() || 'G'}</AvatarFallback>
