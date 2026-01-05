@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useGame } from '@/context/GameContext';
 import Tile from './Tile';
 import { isValidBonusTarget } from '@/lib/game/logic';
@@ -7,29 +7,24 @@ export default function Board() {
   const { state, dispatch } = useGame();
   const { grid, bonusScout } = state;
 
-  if (!grid || grid.length === 0) return <div>Loading Board...</div>;
-
-  // const { player } = state;
-
-  const handleTileClick = (x, y) => {
+  const handleTileClick = useCallback((x, y) => {
     // Intercept for Bonus Scout Mode
     if (bonusScout && bonusScout.active) {
       if (isValidBonusTarget(grid, bonusScout.origin.x, bonusScout.origin.y, x, y)) {
         dispatch({ type: 'SCOUT_TILE', payload: { sx: x, sy: y } });
         return;
       }
-      // If clicking invalid tile in bonus mode, maybe just do nothing or let move happen if it's revealed?
-      // If clicking REVEALED tile in bonus mode -> Move normally?
-      // Yes, let player move while in bonus mode.
     }
 
     dispatch({ type: 'MOVE_PLAYER', payload: { x, y } });
-  };
+  }, [bonusScout, grid, dispatch]);
 
-  const handleContextMenu = (e, x, y) => {
+  const handleContextMenu = useCallback((e, x, y) => {
     e.preventDefault();
     dispatch({ type: 'SCOUT_TILE', payload: { sx: x, sy: y } });
-  };
+  }, [dispatch]);
+
+  if (!grid || grid.length === 0) return <div>Loading Board...</div>;
 
   return (
     <div className="flex flex-col items-center justify-center p-4">
@@ -47,11 +42,13 @@ export default function Board() {
             return (
               <Tile
                 key={`${x}-${y}`}
+                x={x}
+                y={y}
                 tile={tile}
                 isPlayer={state.player && state.player.x === x && state.player.y === y}
                 isBonusTarget={isBonusTarget}
-                onClick={() => handleTileClick(x, y)}
-                onContextMenu={(e) => handleContextMenu(e, x, y)}
+                onClick={handleTileClick}
+                onContextMenu={handleContextMenu}
               />
             );
           })
