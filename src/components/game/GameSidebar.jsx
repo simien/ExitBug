@@ -15,7 +15,9 @@ import {
   Scroll,
   Bomb,
   ArrowsClockwise as RefreshCw,
-  Star
+  Star,
+  Fire,
+  Skull
 } from '@phosphor-icons/react';
 import { GAME_STATE } from '@/lib/game/constants'; // Adjusted import path
 
@@ -78,9 +80,9 @@ export default function GameSidebar() {
           />
           <StatItem
             icon={Shield}
-            value={player.stats.shield ? "ON" : "OFF"}
-            colorClass={player.stats.shield ? "text-blue-500 border-blue-500/20" : "text-muted-foreground border-border"}
-            tooltip={player.stats.shield ? "Shield Active" : "Shield Inactive"}
+            value={`Lvl ${player.stats.shieldLevel || 0}`}
+            colorClass={player.stats.shieldLevel > 0 ? "text-blue-500 border-blue-500/20" : "text-muted-foreground border-border"}
+            tooltip={`Iron Will (${(player.stats.shieldLevel || 0) * 10}% Block Chance)`}
           />
         </div>
       </div>
@@ -103,6 +105,8 @@ export default function GameSidebar() {
             else if (item.id === 'vision_scroll') { Icon = Scroll; color = "text-cyan-500"; }
             else if (item.id === 'shield') { Icon = Shield; color = "text-blue-500"; }
             else if (item.id === 'smoke_bomb') { Icon = Bomb; color = "text-gray-500"; }
+            else if (item.id === 'flint') { Icon = Fire; color = "text-orange-600"; }
+            else if (item.id === 'cursed_blade') { Icon = Skull; color = "text-purple-600"; }
 
             return (
               <TooltipProvider key={item.id} delayDuration={0}>

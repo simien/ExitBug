@@ -383,9 +383,17 @@ export function enterTile(board, player, x, y, currentAlert) {
         // Failure
         message = `Combat: Rolled ${roll} + ${bonus} = ${total} (vs ${enemyDC}). Missed!`;
 
-        if (newPlayer.stats.shield) {
+        // 1. Check Passive Block (Shield Skill)
+        const shieldLevel = newPlayer.stats.shieldLevel || 0;
+        const blockChance = shieldLevel * 0.10; // 10% per level
+
+        if (Math.random() < blockChance) {
+          message += " Passive Shield blocked the hit!";
+        }
+        // 2. Check Active Shield (Item)
+        else if (newPlayer.stats.shield) {
           newPlayer.stats.shield = false;
-          message += " Shield blocked the counter-attack!";
+          message += " Stealth Cloak blocked the counter-attack!";
         } else {
           damage = 1;
           message += " You took damage.";
@@ -458,10 +466,11 @@ export function enterTile(board, player, x, y, currentAlert) {
       // Also add to inventory or just stat? The previous logic pushed to inventory AND set stat?
       // "Stealth Cloak" item.
       newPlayer.inventory.push({ id: 'shield', name: 'Stealth Cloak', description: 'Blocks 1 hit' });
-    } else if (tile.item.id === 'smoke_bomb') {
-      alertIncrease -= 30; // Reduce alert
-      message += " Smoke Bomb! Alertness dropped.";
       newPlayer.inventory.push({ id: 'smoke_bomb', name: 'Smoke Bomb', description: 'Reduces Alert' });
+    } else if (tile.item.id === 'cursed_blade') {
+      newPlayer.stats.attackBonus += 2;
+      message += " You feel a dark power. (+2 Attack)";
+      newPlayer.inventory.push({ id: 'cursed_blade', name: 'Cursed Blade', description: '+2 Attack' });
     }
 
     // Remove item from tile after pickup

@@ -20,8 +20,12 @@ const getInitialState = () => ({
       visionRadius: 1,
       visionProgress: 0,
       attackBonus: 0,
+      attackProgress: 0,
 
       shield: false,
+      shieldLevel: 0,
+      shieldProgress: 0,
+
       stealth: 0
     },
     inventory: []
@@ -225,6 +229,40 @@ function gameReducer(state, action) {
         upgradedPlayer.xp -= cost;
         upgradedPlayer.stats.stealth = (upgradedPlayer.stats.stealth || 0) + 1;
         upgradeMsg = "Stealth Upgraded! Better odds vs traps.";
+
+      } else if (stat === 'ATTACK') {
+        const currentLevel = upgradedPlayer.stats.attackBonus;
+        // Threshold scales with level (0->1, 1->2, etc). Let's use simple level-based threshold.
+        // Level 0 requires 1 progress to reach Level 1? Or just flat?
+        // Let's match Vision: threshold = currentLevel + 1 (to make it harder?)
+        // Vision uses `threshold = currentLevel` (line 204). at lvl 1, 1 pt to lvl 2.
+        const threshold = Math.max(1, currentLevel);
+
+        upgradedPlayer.xp -= cost;
+        upgradedPlayer.stats.attackProgress = (upgradedPlayer.stats.attackProgress || 0) + 1;
+
+        if (upgradedPlayer.stats.attackProgress >= threshold) {
+          upgradedPlayer.stats.attackBonus += 1;
+          upgradedPlayer.stats.attackProgress = 0;
+          upgradeMsg = `Strength Increased! (+${upgradedPlayer.stats.attackBonus} Attack)`;
+        } else {
+          upgradeMsg = `Strength Improved. (${upgradedPlayer.stats.attackProgress}/${threshold})`;
+        }
+
+      } else if (stat === 'SHIELD') {
+        const currentLevel = upgradedPlayer.stats.shieldLevel || 0;
+        const threshold = Math.max(1, currentLevel);
+
+        upgradedPlayer.xp -= cost;
+        upgradedPlayer.stats.shieldProgress = (upgradedPlayer.stats.shieldProgress || 0) + 1;
+
+        if (upgradedPlayer.stats.shieldProgress >= threshold) {
+          upgradedPlayer.stats.shieldLevel = (upgradedPlayer.stats.shieldLevel || 0) + 1;
+          upgradedPlayer.stats.shieldProgress = 0;
+          upgradeMsg = `Defense Increased! (${upgradedPlayer.stats.shieldLevel * 10}% Block Chance)`;
+        } else {
+          upgradeMsg = `Defense Improved. (${upgradedPlayer.stats.shieldProgress}/${threshold})`;
+        }
       }
 
       return {

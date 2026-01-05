@@ -82,13 +82,29 @@ export const ITEM_DEFS = {
     icon: "💨",
     desc: "-30% Alertness",
     type: 'consumable'
+  },
+  FLINT: {
+    id: 'flint',
+    name: "Flint & Steel",
+    icon: "🔥",
+    desc: "Lights torches",
+    type: 'consumable'
+  },
+  CURSED_BLADE: {
+    id: 'cursed_blade',
+    name: "Cursed Blade",
+    icon: "☠️",
+    desc: "+2 Attack Bonus",
+    type: 'permanent'
   }
 };
 
 export const UPGRADE_COSTS = {
   VISION: { base: 100, inc: 50 },
   HP: { base: 150, inc: 100 },
-  STEALTH: { base: 200, inc: 200 }
+  STEALTH: { base: 200, inc: 200 },
+  ATTACK: { base: 120, inc: 60 },
+  SHIELD: { base: 120, inc: 60 }
 };
 
 export const LOOT_CHANCE = 0.08;

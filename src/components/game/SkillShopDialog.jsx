@@ -11,7 +11,8 @@ import {
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Eye, HeartStraight as Heart, Ghost } from '@phosphor-icons/react';
+import { Eye, HeartStraight as Heart, Ghost, Sword, Shield } from '@phosphor-icons/react';
+import { UPGRADE_COSTS } from '@/lib/game/constants';
 
 export function SkillShopDialog({ open, onOpenChange }) {
   const { state, dispatch } = useGame();
@@ -32,7 +33,25 @@ export function SkillShopDialog({ open, onOpenChange }) {
       level: `Lvl ${player.stats.visionRadius}`,
       icon: Eye,
       color: "text-amber-400",
-      cost: 100 // Should ideally be dynamic from UPGRADE_COSTS in constants, but hardcoded for now to match legacy
+      cost: UPGRADE_COSTS.VISION.base + ((player.stats.visionRadius - 1) * UPGRADE_COSTS.VISION.inc)
+    },
+    {
+      id: 'ATTACK',
+      name: 'Strength',
+      desc: 'Increase combat roll bonus.',
+      level: `Lvl ${player.stats.attackBonus || 0}`,
+      icon: Sword,
+      color: "text-orange-500",
+      cost: UPGRADE_COSTS.ATTACK.base + ((player.stats.attackBonus || 0) * UPGRADE_COSTS.ATTACK.inc)
+    },
+    {
+      id: 'SHIELD',
+      name: 'Iron Will',
+      desc: 'Passive block chance (10% per level).',
+      level: `Lvl ${player.stats.shieldLevel || 0}`,
+      icon: Shield,
+      color: "text-blue-500",
+      cost: UPGRADE_COSTS.SHIELD.base + ((player.stats.shieldLevel || 0) * UPGRADE_COSTS.SHIELD.inc)
     },
     {
       id: 'HP',
@@ -41,7 +60,7 @@ export function SkillShopDialog({ open, onOpenChange }) {
       level: `${player.maxHp} HP`,
       icon: Heart,
       color: "text-red-500",
-      cost: 150
+      cost: UPGRADE_COSTS.HP.base + ((player.maxHp - 3) * UPGRADE_COSTS.HP.inc)
     },
     {
       id: 'STEALTH',
@@ -50,7 +69,7 @@ export function SkillShopDialog({ open, onOpenChange }) {
       level: `Lvl ${player.stats.stealth || 0}`,
       icon: Ghost,
       color: "text-slate-400",
-      cost: 200
+      cost: UPGRADE_COSTS.STEALTH.base + ((player.stats.stealth || 0) * UPGRADE_COSTS.STEALTH.inc)
     },
   ];
 
