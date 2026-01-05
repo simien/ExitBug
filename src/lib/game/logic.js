@@ -487,4 +487,5 @@ export function enterTile(board, player, x, y, currentAlert) {
 }
 
 // Check Win/Loss isn't static anymore, managed by GameContext state transitions
-export function checkWinCondition(grid) { return false; }
+// eslint-disable-next-line no-unused-vars
+export function checkWinCondition(_grid) { return false; }

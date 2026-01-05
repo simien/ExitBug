@@ -323,6 +323,7 @@ export function GameProvider({ children, user }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useGame() {
   return useContext(GameContext);
 }
