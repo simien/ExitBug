@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { TILE_STATUS } from '@/lib/game/constants';
 import {
   WallIcon, ExitIcon, EnemyIcon, TrapIcon,
@@ -14,7 +14,7 @@ import {
 // Mine: Red tint
 // Flag: Yellow tint
 
-export default function Tile({ tile, isPlayer, isBonusTarget, onClick, onContextMenu }) {
+const Tile = memo(function Tile({ x, y, tile, isPlayer, isBonusTarget, onClick, onContextMenu }) {
   const { status, type, content, item } = tile;
 
   // Base: Sleek, dark, functional
@@ -98,10 +98,12 @@ export default function Tile({ tile, isPlayer, isBonusTarget, onClick, onContext
   return (
     <div
       className={baseClasses}
-      onClick={onClick}
-      onContextMenu={onContextMenu}
+      onClick={() => onClick(x, y)}
+      onContextMenu={(e) => onContextMenu(e, x, y)}
     >
       {getContent()}
     </div>
   );
-}
+});
+
+export default Tile;
