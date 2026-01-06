@@ -27,10 +27,10 @@ export default function Board() {
   if (!grid || grid.length === 0) return <div>Loading Board...</div>;
 
   return (
-    <div className="flex flex-col items-center justify-center p-4">
+    <>
       <div
         className="grid gap-1 bg-black/40 p-2 rounded-lg backdrop-blur-md shadow-2xl border border-white/10"
-        style={{ gridTemplateColumns: `repeat(${grid.length}, minmax(0, 1fr))` }}
+        style={{ gridTemplateColumns: `repeat(${grid.length}, max-content)` }}
       >
         {grid.map((row, x) => (
           row.map((tile, y) => {
@@ -54,6 +54,6 @@ export default function Board() {
           })
         ))}
       </div>
-    </div>
+    </>
   );
 }

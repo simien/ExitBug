@@ -10,6 +10,7 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import Login from '@/components/auth/Login';
 import Register from '@/components/auth/Register';
 import { EnemyIcon } from '@/components/ui/Icons';
+import ToastOverlay from '@/components/ui/ToastOverlay';
 
 import TutorialModal from '@/components/ui/TutorialModal';
 import DevTools from '@/components/dev/DevTools';
@@ -98,6 +99,8 @@ function App() {
             >
               <Board />
             </NovaLayout>
+
+            <ToastOverlay />
 
             {/* Leaderboard Modal logic would go here, maybe refactor to Dialog */}
             {showLeaderboard && (

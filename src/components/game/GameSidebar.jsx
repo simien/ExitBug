@@ -60,50 +60,50 @@ export default function GameSidebar() {
 
 
   return (
-    <div className="flex flex-col gap-6 py-4">
+    <div className="flex flex-col gap-4 py-4 h-full">
 
       {/* Floor Indicator */}
-      <div className="flex items-center justify-center">
-        <Badge variant="outline" className="text-xs font-bold tracking-widest py-1 px-3 border-primary/20 bg-background/50 backdrop-blur-md whitespace-nowrap">
+      <div className="flex items-center justify-center pt-2">
+        <Badge variant="outline" className="text-xs font-bold tracking-widest py-1 px-4 border-primary/20 bg-background/50 backdrop-blur-md whitespace-nowrap shadow-sm">
           FLOOR <span className="text-primary ml-1 text-sm">{state.floor}</span>
         </Badge>
       </div>
 
-      <Separator />
+      <Separator className="bg-border/40 my-2" />
 
       {/* Passives Section */}
-      <div className="space-y-2">
+      <div className="space-y-3">
         <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest text-center">Stats & Passives</h3>
         <div className="grid grid-cols-3 gap-2">
           <StatItem
             icon={Eye}
             value={player.stats.visionRadius}
-            colorClass="text-amber-500 border-amber-500/20"
+            colorClass="text-amber-500 border-amber-500/20 bg-amber-500/5 hover:bg-amber-500/10"
             tooltip={`Eagle Eye Level ${player.stats.visionRadius}`}
           />
           <StatItem
             icon={Sword}
             value={`+${player.stats.attackBonus}`}
-            colorClass="text-red-500 border-red-500/20"
+            colorClass="text-red-500 border-red-500/20 bg-red-500/5 hover:bg-red-500/10"
             tooltip="Attack Bonus"
           />
           <StatItem
             icon={Shield}
             value={`Lvl ${player.stats.shieldLevel || 0}`}
-            colorClass={player.stats.shieldLevel > 0 ? "text-blue-500 border-blue-500/20" : "text-muted-foreground border-border"}
+            colorClass={player.stats.shieldLevel > 0 ? "text-blue-500 border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10" : "text-muted-foreground border-border bg-muted/20 hover:bg-muted/30"}
             tooltip={`Iron Will (${(player.stats.shieldLevel || 0) * 10}% Block Chance)`}
           />
         </div>
       </div>
 
-      <Separator />
+      <Separator className="bg-border/40 my-2" />
 
       {/* Inventory Section */}
-      <div className="space-y-2 flex-1">
+      <div className="space-y-3 flex-1">
         <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest text-center">Inventory</h3>
 
         {uniqueItems.length === 0 && (
-          <div className="text-center py-8 text-xs text-muted-foreground border border-dashed rounded-md">Empty</div>
+          <div className="text-center py-8 text-xs text-muted-foreground border border-dashed border-border/60 rounded-md bg-muted/10">Empty</div>
         )}
 
         <div className="grid grid-cols-4 gap-2">
@@ -121,13 +121,16 @@ export default function GameSidebar() {
               <TooltipProvider key={item.id} delayDuration={0}>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <div className="relative aspect-square flex items-center justify-center rounded-md border bg-card hover:bg-accent transition-colors cursor-pointer group">
+                    <div
+                      className="relative aspect-square flex items-center justify-center rounded-md border bg-card hover:bg-accent transition-all cursor-pointer group shadow-sm hover:shadow-md hover:border-primary/20"
+                      onClick={() => dispatch({ type: 'USE_ITEM', payload: { itemId: item.id } })}
+                    >
                       <Icon className={`w-5 h-5 ${color} group-hover:scale-110 transition-transform`} />
-                      <Badge variant="secondary" className="absolute -top-1.5 -right-1.5 h-4 w-4 p-0 flex items-center justify-center text-[9px] border-background">{item.count}</Badge>
+                      <Badge variant="secondary" className="absolute -top-1.5 -right-1.5 h-4 w-4 p-0 flex items-center justify-center text-[9px] border-background shadow-none">{item.count}</Badge>
                     </div>
                   </TooltipTrigger>
                   <TooltipContent side="left">
-                    <p>{item.name}</p>
+                    <p>{item.name} (Click to Use)</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -146,8 +149,8 @@ export default function GameSidebar() {
         </Button>
       )}
 
-      <div className="mt-auto pt-4 text-center">
-        <p className="text-[10px] text-muted-foreground/50">Antigravity ExitBug</p>
+      <div className="mt-auto pt-2 text-center">
+        <p className="text-[10px] text-muted-foreground/40 font-medium tracking-wider">Antigravity ExitBug</p>
       </div>
 
     </div>

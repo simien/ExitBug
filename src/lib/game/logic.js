@@ -326,8 +326,8 @@ export function enterTile(board, player, x, y, currentAlert) {
       return {
         board: newBoard,
         player: newPlayer,
-        alertIncrease: -5, // Lighting it calms you? Or visual noise?
-        message: "Lit Torch! Area Revealed."
+        alertIncrease: -10, // Lighting it calms you? Or visual noise?
+        message: "Lit Torch! Area Revealed. (-10 Alert)"
       };
     } else {
       return {
@@ -466,7 +466,12 @@ export function enterTile(board, player, x, y, currentAlert) {
       // Also add to inventory or just stat? The previous logic pushed to inventory AND set stat?
       // "Stealth Cloak" item.
       newPlayer.inventory.push({ id: 'shield', name: 'Stealth Cloak', description: 'Blocks 1 hit' });
-      newPlayer.inventory.push({ id: 'smoke_bomb', name: 'Smoke Bomb', description: 'Reduces Alert' });
+    } else if (tile.item.id === 'smoke_bomb') {
+      message += " Obtained Smoke Bomb.";
+      newPlayer.inventory.push({ id: 'smoke_bomb', name: 'Smoke Bomb', description: '-30 Alertness' });
+    } else if (tile.item.id === 'flint') {
+      message += " Obtained Flint & Steel.";
+      newPlayer.inventory.push({ id: 'flint', name: 'Flint & Steel', description: 'Lights Torches' });
     } else if (tile.item.id === 'cursed_blade') {
       newPlayer.stats.attackBonus += 2;
       message += " You feel a dark power. (+2 Attack)";

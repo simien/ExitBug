@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import { createBoard, enterTile, scoutTile, findPath, isValidBonusTarget } from '@/lib/game/logic';
-import { GRID_SIZE, INITIAL_HP, GAME_STATE } from '@/lib/game/constants';
+import { GRID_SIZE, INITIAL_HP, GAME_STATE, UPGRADE_COSTS } from '@/lib/game/constants';
 
 const GameContext = createContext();
 
@@ -38,7 +38,8 @@ const getInitialState = () => ({
   alertness: 0,
   floor: 1,
   gameState: GAME_STATE.PLAYING,
-  message: "Welcome to ExitBug. Stay quiet..."
+  message: "Find the Exit. Watch for Bugs. Be Quiet.",
+  notification: null
 });
 
 function gameReducer(state, action) {
@@ -272,6 +273,62 @@ function gameReducer(state, action) {
       };
     }
 
+    case 'SHOW_NOTIFICATION':
+      return {
+        ...state,
+        notification: action.payload
+      };
+
+    case 'DISMISS_NOTIFICATION':
+      return {
+        ...state,
+        notification: null
+      };
+
+    case 'USE_ITEM': {
+      const { itemId } = action.payload;
+      const itemIndex = state.player.inventory.findIndex(i => i.id === itemId);
+      if (itemIndex === -1) return state;
+
+      let newPlayer = { ...state.player };
+      let newMessage = state.message;
+      let newAlertness = state.alertness;
+      let used = false;
+
+      if (itemId === 'potion') {
+        if (newPlayer.hp < newPlayer.maxHp) {
+          newPlayer.hp += 1;
+          newMessage = "Used Potion. HP Restored.";
+          used = true;
+        } else {
+          newMessage = "HP already full!";
+        }
+      } else if (itemId === 'smoke_bomb') {
+        newAlertness = Math.max(0, state.alertness - 30);
+        newMessage = "Used Smoke Bomb! Alertness reduced.";
+        used = true;
+      } else if (itemId === 'vision_scroll') {
+        // Typically passive, but if we wanted to allow "Use" for extra reveal
+        newMessage = "This scroll is already active (Passive).";
+      } else if (itemId === 'flint') {
+        newMessage = "Walk into an Unlit Torch to use Flint.";
+      }
+
+      if (used) {
+        // Remove 1 instance
+        const newInventory = [...newPlayer.inventory];
+        newInventory.splice(itemIndex, 1);
+        newPlayer.inventory = newInventory;
+      }
+
+      return {
+        ...state,
+        player: newPlayer,
+        alertness: newAlertness,
+        message: newMessage
+      };
+    }
+
     default:
       return state;
   }
@@ -315,6 +372,37 @@ export function GameProvider({ children, user }) {
     };
     saveScore();
   }, [state.gameState, user, state.player.xp, state.floor]);
+
+  /* Notification Logic */
+  const { player } = state;
+  const prevXpRef = React.useRef(player.xp);
+
+  useEffect(() => {
+    const currentXp = player.xp;
+    const prevXp = prevXpRef.current;
+
+    // Update ref
+    prevXpRef.current = currentXp;
+
+    if (currentXp > prevXp) {
+      // Calculate min cost
+      const { VISION, ATTACK, SHIELD, HP, STEALTH } = UPGRADE_COSTS;
+
+      const costs = [
+        VISION.base + ((player.stats.visionRadius - 1) * VISION.inc),
+        ATTACK.base + ((player.stats.attackBonus || 0) * ATTACK.inc),
+        SHIELD.base + ((player.stats.shieldLevel || 0) * SHIELD.inc),
+        HP.base + ((player.maxHp - 3) * HP.inc),
+        STEALTH.base + ((player.stats.stealth || 0) * STEALTH.inc)
+      ];
+
+      const minCost = Math.min(...costs);
+
+      if (prevXp < minCost && currentXp >= minCost) {
+        dispatch({ type: 'SHOW_NOTIFICATION', payload: { message: "You have enough XP to visit the Skill Shop!" } });
+      }
+    }
+  }, [player, dispatch]);
 
   return (
     <GameContext.Provider value={{ state, dispatch }}>
