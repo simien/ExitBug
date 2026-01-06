@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useRef, useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
 import Tile from './Tile';
 import { isValidBonusTarget } from '@/lib/game/logic';
@@ -7,17 +7,29 @@ export default function Board() {
   const { state, dispatch } = useGame();
   const { grid, bonusScout } = state;
 
+  // ⚡ Bolt Optimization: Use ref to access latest state in callbacks without triggering re-creation
+  // This prevents handleTileClick from changing when grid/bonusScout updates,
+  // allowing React.memo in Tile to work effectively for unchanged tiles.
+  const stateRef = useRef({ grid, bonusScout });
+
+  // Keep ref synced with latest state
+  useEffect(() => {
+    stateRef.current = { grid, bonusScout };
+  });
+
   const handleTileClick = useCallback((x, y) => {
+    const { grid: currentGrid, bonusScout: currentBonusScout } = stateRef.current;
+
     // Intercept for Bonus Scout Mode
-    if (bonusScout && bonusScout.active) {
-      if (isValidBonusTarget(grid, bonusScout.origin.x, bonusScout.origin.y, x, y)) {
+    if (currentBonusScout && currentBonusScout.active) {
+      if (isValidBonusTarget(currentGrid, currentBonusScout.origin.x, currentBonusScout.origin.y, x, y)) {
         dispatch({ type: 'SCOUT_TILE', payload: { sx: x, sy: y } });
         return;
       }
     }
 
     dispatch({ type: 'MOVE_PLAYER', payload: { x, y } });
-  }, [bonusScout, grid, dispatch]);
+  }, [dispatch]);
 
   const handleContextMenu = useCallback((e, x, y) => {
     e.preventDefault();

@@ -1,3 +1,3 @@
-## 2026-01-05 - Accessibility for Game Interactions
-**Learning:** Icon-only buttons (like those using Phosphor icons) are a common pattern in game UIs but often lack accessible names, making them invisible to screen reader users. Adding `aria-label` is a high-impact, low-risk fix.
-**Action:** Always scan `GameHeader` and toolbars for `<Button size="icon">` and ensure they have a descriptive `aria-label`. In dynamic lists (like shops), construct labels that include both the item name and cost (e.g., "Purchase [Item] for [Cost]") to provide full context without visual scanning.
+## 2026-01-05 - Status Indicators and Mobile Accessibility
+**Learning:** Visual status indicators (like HP bars or Alertness meters) often rely on text that is hidden on mobile screens or icons that lack semantic meaning.
+**Action:** Wrap status indicators in a container with `role="status"` and provide a dynamic `aria-label` that explicitly states the value and context (e.g., "Health: 50 out of 100"). This ensures users on all devices (and screen readers) get the same information, even if visual text is hidden.

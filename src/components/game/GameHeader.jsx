@@ -36,7 +36,12 @@ export default function GameHeader({ user, onLogout, onShowLeaderboard }) {
       <div className="relative flex items-center justify-between md:justify-center px-2 md:px-4 min-w-0 w-full h-full gap-2">
 
         <div className="flex md:hidden items-center gap-4 shrink-0 z-20">
-          <Badge variant="outline" className="text-[10px] md:text-xs font-bold tracking-widest py-0.5 md:py-1 px-2 md:px-3 border-primary/20 bg-black/40 backdrop-blur-md whitespace-nowrap">
+          <Badge
+            variant="outline"
+            className="text-[10px] md:text-xs font-bold tracking-widest py-0.5 md:py-1 px-2 md:px-3 border-primary/20 bg-black/40 backdrop-blur-md whitespace-nowrap"
+            aria-label={`Current Floor: ${floor}`}
+            role="status"
+          >
             <span className="text-primary text-sm">{floor}</span>
           </Badge>
         </div>
@@ -45,14 +50,22 @@ export default function GameHeader({ user, onLogout, onShowLeaderboard }) {
         <div className="relative flex items-center justify-center flex-1 w-auto md:w-full md:max-w-[800px] gap-2 md:gap-4 min-w-0">
 
           {/* 1. HP */}
-          <div className="flex items-center justify-end gap-1 md:gap-2 text-white bg-red-500/10 px-2 md:px-3 py-1 rounded-full border border-red-500/20 whitespace-nowrap shrink-0">
+          <div
+            className="flex items-center justify-end gap-1 md:gap-2 text-white bg-red-500/10 px-2 md:px-3 py-1 rounded-full border border-red-500/20 whitespace-nowrap shrink-0"
+            role="status"
+            aria-label={`Health: ${player.hp} out of ${player.maxHp}`}
+          >
             <span className="font-mono font-bold text-xs md:text-sm hidden md:inline">{player.hp}/{player.maxHp}</span>
-            <Heart size={16} weight="fill" className="text-red-500" />
+            <Heart size={16} weight="fill" className="text-red-500" aria-hidden="true" />
           </div>
 
           {/* 2. ALERT METER */}
-          <div className="w-full min-w-[60px] max-w-[200px] md:max-w-[412px] flex-shrink flex flex-col gap-1 mx-0 md:mx-2 transition-all">
-            <div className="flex justify-between text-[8px] md:text-[10px] text-muted-foreground uppercase font-bold tracking-wider">
+          <div
+            className="w-full min-w-[60px] max-w-[200px] md:max-w-[412px] flex-shrink flex flex-col gap-1 mx-0 md:mx-2 transition-all"
+            role="status"
+            aria-label={`Alertness Level: ${alertness}%`}
+          >
+            <div className="flex justify-between text-[8px] md:text-[10px] text-muted-foreground uppercase font-bold tracking-wider" aria-hidden="true">
               <span className="hidden xs:inline">Alertness</span>
               <span className={alertness > 80 ? "text-red-500" : "text-primary"}>{alertness}%</span>
             </div>
@@ -64,8 +77,9 @@ export default function GameHeader({ user, onLogout, onShowLeaderboard }) {
             onClick={() => setShopOpen(true)}
             className="hidden md:flex items-center gap-2 text-amber-200 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20 whitespace-nowrap hover:bg-amber-500/20 hover:scale-105 transition-all cursor-pointer pointer-events-auto shrink-0"
             title="Open Skill Shop"
+            aria-label={`Open Skill Shop. Current XP: ${player.xp}`}
           >
-            <Zap size={16} weight="fill" className="text-amber-400" />
+            <Zap size={16} weight="fill" className="text-amber-400" aria-hidden="true" />
             <span className="font-mono font-bold text-sm">{player.xp} XP</span>
           </button>
 
@@ -73,8 +87,8 @@ export default function GameHeader({ user, onLogout, onShowLeaderboard }) {
 
         {/* Mobile Actions (Visible only on small screens) - Static flow on mobile */}
         <div className="flex md:hidden items-center gap-1 shrink-0 z-20">
-          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setShopOpen(true)} aria-label="Open skill shop">
-            <Zap size={18} weight="fill" className="text-amber-400" />
+          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setShopOpen(true)} aria-label={`Open Skill Shop. Current XP: ${player.xp}`}>
+            <Zap size={18} weight="fill" className="text-amber-400" aria-hidden="true" />
           </Button>
           <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onShowLeaderboard} aria-label="Show leaderboard">
             <Trophy size={18} />
