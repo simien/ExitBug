@@ -14,7 +14,7 @@ import {
 // Mine: Red tint
 // Flag: Yellow tint
 
-const Tile = memo(function Tile({ x, y, tile, isPlayer, isBonusTarget, onClick, onContextMenu }) {
+const Tile = memo(function Tile({ x, y, tile, isPlayer, isBonusTarget, onClick, onContextMenu, id }) {
   const { status, type, content, item } = tile;
 
   // Base: Sleek, dark, functional
@@ -97,6 +97,7 @@ const Tile = memo(function Tile({ x, y, tile, isPlayer, isBonusTarget, onClick, 
 
   return (
     <div
+      id={id}
       className={baseClasses}
       onClick={() => onClick(x, y)}
       onContextMenu={(e) => onContextMenu(e, x, y)}

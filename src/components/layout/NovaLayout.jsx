@@ -22,7 +22,7 @@ export const NovaLayout = ({ children, sidebar, header }) => {
           </div>
 
           {/* Main Game Area */}
-          <main className="flex-1 relative overflow-auto bg-dot-pattern flex">
+          <main className="flex-1 relative overflow-auto overscroll-x-none bg-dot-pattern flex">
             {/*
               Using flex + m-auto is a reliable way to center content when it fits,
               but allow scrolling when it overflows, while preserving padding.

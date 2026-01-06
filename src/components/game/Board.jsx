@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
 import Tile from './Tile';
 import { isValidBonusTarget } from '@/lib/game/logic';
@@ -24,6 +24,17 @@ export default function Board() {
     dispatch({ type: 'SCOUT_TILE', payload: { sx: x, sy: y } });
   }, [dispatch]);
 
+  // Auto-scroll to player on floor change (or initial load)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const element = document.getElementById('active-player-tile');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+      }
+    }, 100); // Small delay to ensure render
+    return () => clearTimeout(timer);
+  }, [state.floor]);
+
   if (!grid || grid.length === 0) return <div>Loading Board...</div>;
 
   return (
@@ -46,6 +57,7 @@ export default function Board() {
                 y={y}
                 tile={tile}
                 isPlayer={state.player && state.player.x === x && state.player.y === y}
+                id={state.player && state.player.x === x && state.player.y === y ? "active-player-tile" : undefined}
                 isBonusTarget={isBonusTarget}
                 onClick={handleTileClick}
                 onContextMenu={handleContextMenu}
